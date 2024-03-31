@@ -1,5 +1,12 @@
 from datetime import datetime, timezone
+    
+# TODO: Need to add a sys input for the command line, for when data is called -> Main
+# TODO: Add comments
 
+def main():
+    data = import_data()
+    processed_data = clean_data(data)    
+    
 def import_data(fileName):
     with open(fileName, 'r') as file:
         data = file.readlines()
@@ -22,9 +29,8 @@ def clean_data(data):
         i+=1
     return processed_data
 
-
-data = import_data('.\\Data\\data.csv')
-print(clean_data(data))
+if __name__ == '__main__':
+    main()
 
 
 
