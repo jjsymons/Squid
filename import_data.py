@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+
 def import_data(fileName):
     with open(fileName, 'r') as file:
         data = file.readlines()
@@ -13,12 +14,11 @@ def clean_data(data):
         # Do the same with the prior line
         kWh, date, _ = data[i].split(',')
         
-        
         dt_bst = datetime.fromisoformat(date)
         dt_utc = dt_bst.astimezone(timezone.utc)
-        kWh = float(kWh)
+        database_utc_time = int(dt_utc.strftime("%Y%m%d%H%M%S"))
         
-        processed_data.append({'Date': dt_utc, 'kWh': "{:.3f}".format(kWh)})
+        processed_data.append({'Date': database_utc_time, 'kWh': float("{:.3f}".format(float(kWh)))})
         i+=1
     return processed_data
 
