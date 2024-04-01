@@ -2,6 +2,7 @@ from datetime import datetime, timezone
     
 # TODO: Need to add a sys input for the command line, for when data is called -> Main
 # TODO: Add comments
+# TODO: Remove Seconds from strftime to reduce memory
 
 def main():
     data = import_data()
@@ -23,6 +24,7 @@ def clean_data(data):
         
         dt_bst = datetime.fromisoformat(date)
         dt_utc = dt_bst.astimezone(timezone.utc)
+
         database_utc_time = int(dt_utc.strftime("%Y%m%d%H%M%S"))
         
         processed_data.append({'Date': database_utc_time, 'kWh': float("{:.3f}".format(float(kWh)))})
