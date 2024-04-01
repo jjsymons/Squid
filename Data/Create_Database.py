@@ -11,11 +11,14 @@ def main():
 def create_database():
     year = datetime.now().strftime('%Y')
     table_name = f"energy_usage_{year}"
+    add_table()
+
+def add_table(table_name):
     try:
         conn = sqlite3.connect(DATABASE_PATH)
         cursor = conn.cursor()
-        cursor.execute('CREATE TABLE IF NOT EXISTS ? (utc_datetime INTEGER, kWh_usage REAL)', (table_name))
-        conn.close()
+        cursor.execute(f"""CREATE TABLE IF NOT EXISTS {table_name} (utc_datetime INTEGER, kWh_usage REAL, UNIQUE(utc_datetime))""")
+        cursor.execute(f"""CREATE INDEX idx_energy_usage_timestamp ON {table_name} (utc_datetime)""")
     except sqlite3.Error as e:
         print("Database error:", e)
     finally:
