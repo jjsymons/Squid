@@ -11,7 +11,7 @@ def main():
 def create_database():
     year = datetime.now().strftime('%Y')
     table_name = f"energy_usage_{year}"
-    add_table()
+    add_table(table_name)
 
 def add_table(table_name):
     try:
@@ -24,7 +24,6 @@ def add_table(table_name):
     finally:
         if conn:
             conn.close()
-    
 
 if __name__ == '__main__':
     main()
