@@ -5,8 +5,10 @@ from datetime import datetime, timezone
 # TODO: Remove Seconds from strftime to reduce memory
 
 def main():
-    data = import_data()
-    processed_data = clean_data(data)    
+    # Temp hard coding file name while testing
+    data = import_data('Data\data.csv')
+    processed_data = clean_data(data)
+    return processed_data    
     
 def import_data(fileName):
     with open(fileName, 'r') as file:
