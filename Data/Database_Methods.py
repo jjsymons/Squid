@@ -1,8 +1,9 @@
 import sqlite3
 import os
+import logging
 from datetime import datetime
 
-DATABASE_PATH = 'squid_Database.db'
+DATABASE_PATH = 'New_Squid\Squid\Data\squid_Database.db'
 
 def main():
     if not os.path.isfile(DATABASE_PATH):
@@ -29,10 +30,17 @@ def insert_data(data_batch):
     conn = sqlite3.connect(DATABASE_PATH)  
     cursor = conn.cursor()
 
-    #Temp hardcoding for table
-    cursor.executemany("""INSERT OR IGNORE INTO energy_usage_2024 (utc_datetime, kWh_usage) VALUES (Date, kWh)""", data_batch)
+    logging.basicConfig(filename='Logs\\data_insertions.log', level=logging.INFO)
 
-    conn.close() 
+    #Temp hardcoding for table
+    for Date, kWh in data_batch:
+        try:
+            cursor.execute(f"""INSERT OR IGNORE INTO energy_usage_2024 (utc_datetime, kWh_usage) VALUES (?, ?)""", (Date, kWh))
+            logging.info(f"Inserted: timestamp={Date}, kwh={kWh}")
+        except sqlite3.Error as e:
+            logging.error(f"{datetime.now()}: Insertion failed for {Date}: {e}")
+        
+        conn.close()
 
 if __name__ == '__main__':
     main()
