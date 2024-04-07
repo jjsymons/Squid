@@ -59,11 +59,11 @@ def insert_data(data_batch):
             else:
                 cursor.execute(f"""INSERT OR IGNORE INTO energy_usage_2024 (utc_datetime, kWh_usage) VALUES (?, ?)""", (Date, kWh))
                 logging.info(f"{datetime.now()}: Inserted: utc_datetime={Date}, kWh_usage={kWh}")
+                conn.commit()
     except sqlite3.Error as e:
             logging.error(f"{datetime.now()}: Insertion failed for {Date}: {e}")
             print("Insertion Error:", e)
     finally:
-        conn.commit()
         conn.close()
 
 if __name__ == '__main__':
